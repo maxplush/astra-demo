@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Astra | Liquid gastronomy from the Californian valley</title>
+<meta name="description" content="Astra is a non-alcoholic craft beverage made from single-origin Californian produce. Pasteurized, 0.0% alc, sparkling, 500mL.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Italiana&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  /* ============ EDIT THESE ============ */
+  /* Contact email and form endpoint are set in the <script> at the bottom. */
+
+  :root {
+    --sage: #C9D3B8;      /* valley grass */
+    --paper: #EEF0E4;     /* morning haze */
+    --olive: #22301F;     /* deep orchard green, used as ink */
+    --apricot: #E8A53B;   /* late sun */
+    --fig: #6E4660;       /* fig skin */
+    --muted: #55624F;
+    --display: "Italiana", "Didot", "Bodoni 72", Georgia, serif;
+    --body: "Figtree", "Helvetica Neue", Arial, sans-serif;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--olive);
+    font-family: var(--body);
+    font-size: 1.0625rem;
+    line-height: 1.6;
+  }
+  a { color: inherit; }
+  a:focus-visible, button:focus-visible, input:focus-visible, textarea:focus-visible {
+    outline: 2px solid var(--apricot);
+    outline-offset: 3px;
+  }
+  img, video { max-width: 100%; }
+
+  /* ---------- Nav ---------- */
+  .nav {
+    position: fixed; inset: 0 0 auto 0; z-index: 10;
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 1.1rem clamp(1.25rem, 4vw, 3rem);
+    color: var(--paper);
+    transition: background .3s, color .3s;
+  }
+  .nav.solid { background: var(--paper); color: var(--olive); box-shadow: 0 1px 0 rgba(34,48,31,.12); }
+  .nav .mark { font-family: var(--display); font-size: 1.6rem; text-decoration: none; letter-spacing: .04em; }
+  .nav ul { list-style: none; display: flex; gap: clamp(1rem, 3vw, 2.25rem); margin: 0; padding: 0; }
+  .nav ul a { text-decoration: none; font-weight: 500; font-size: .95rem; }
+  .nav ul a:hover { text-decoration: underline; text-underline-offset: 4px; }
+
+  /* ---------- Hero ---------- */
+  .hero {
+    position: relative;
+    min-height: 100svh;
+    display: grid;
+    align-items: end;
+    overflow: hidden;
+    color: var(--paper);
+    /* Fallback "golden hour over the valley" until the video is ready */
+    background:
+      radial-gradient(ellipse 60% 45% at 72% 30%, rgba(232,165,59,.85), transparent 70%),
+      linear-gradient(180deg, #6E4660 0%, #8C6A55 38%, #4E6040 70%, #22301F 100%);
+  }
+  .hero video {
+    position: absolute; inset: 0; width: 100%; height: 100%;
+    object-fit: cover;
+  }
+  .hero::after { /* legibility scrim */
+    content: ""; position: absolute; inset: 0;
+    background: linear-gradient(180deg, rgba(34,48,31,.25) 0%, rgba(34,48,31,0) 35%, rgba(34,48,31,.65) 100%);
+  }
+  .bubbles { position: absolute; inset: 0; pointer-events: none; z-index: 1; }
+  .bubbles span {
+    position: absolute; bottom: -20px;
+    border-radius: 50%;
+    border: 1px solid rgba(238,240,228,.55);
+    animation: rise linear infinite;
+    opacity: 0;
+  }
+  @keyframes rise {
+    0%   { transform: translateY(0) translateX(0); opacity: 0; }
+    10%  { opacity: .9; }
+    100% { transform: translateY(-105svh) translateX(12px); opacity: 0; }
+  }
+  .hero-inner {
+    position: relative; z-index: 2;
+    padding: 0 clamp(1.25rem, 4vw, 3rem) clamp(2.5rem, 7vw, 5rem);
+  }
+  .wordmark {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(6rem, 24vw, 22rem);
+    line-height: .8;
+    letter-spacing: .02em;
+    margin: 0;
+  }
+  .slogan {
+    font-family: var(--display);
+    font-size: clamp(1.4rem, 3vw, 2.3rem);
+    margin: 1.25rem 0 0;
+    max-width: 22ch;
+    line-height: 1.15;
+  }
+
+  /* ---------- Sections ---------- */
+  section { padding: clamp(4rem, 10vw, 8rem) clamp(1.25rem, 4vw, 3rem); }
+  h2 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(2.4rem, 6vw, 4.5rem);
+    line-height: 1;
+    margin: 0 0 2rem;
+  }
+
+  .story {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 6vw, 6rem);
+    max-width: 1200px; margin: 0 auto;
+  }
+  .story p { max-width: 62ch; margin: 0 0 1.2rem; }
+  .story .lede {
+    font-family: var(--display);
+    font-size: clamp(1.5rem, 2.6vw, 2.1rem);
+    line-height: 1.25;
+    color: var(--fig);
+  }
+  .specs {
+    display: flex; flex-wrap: wrap; gap: .5rem;
+    list-style: none; padding: 0; margin: 2rem 0 0;
+  }
+  .specs li {
+    border: 1px solid var(--olive);
+    border-radius: 999px;
+    padding: .3rem .9rem;
+    font-size: .9rem;
+    font-weight: 500;
+  }
+
+  .nots { background: var(--olive); color: var(--paper); }
+  .nots-inner { max-width: 1200px; margin: 0 auto; }
+  .nots ol { list-style: none; margin: 0; padding: 0; }
+  .nots li {
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(1rem, 6vw, 6rem);
+    padding: 2rem 0;
+    border-top: 1px solid rgba(238,240,228,.25);
+  }
+  .nots li:last-child { border-bottom: 1px solid rgba(238,240,228,.25); }
+  .nots h3 {
+    font-family: var(--display);
+    font-weight: 400;
+    font-size: clamp(1.8rem, 3.6vw, 2.8rem);
+    line-height: 1.05;
+    margin: 0;
+    color: var(--apricot);
+  }
+  .nots p { margin: 0; max-width: 52ch; }
+  .signoff {
+    margin-top: 3rem;
+    font-family: var(--display);
+    font-size: 1.6rem;
+    line-height: 1.3;
+  }
+  .musings { margin-top: 2rem; }
+  .musings a { text-underline-offset: 5px; font-weight: 500; }
+  .musings a:hover { color: var(--apricot); }
+
+  /* ---------- Contact ---------- */
+  .contact {
+    background: var(--sage);
+  }
+  .contact-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: grid;
+    grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+    gap: clamp(2rem, 6vw, 6rem);
+  }
+  .contact .intro p { max-width: 38ch; margin: 0 0 1.2rem; }
+  .email-link {
+    font-family: var(--display);
+    font-size: clamp(1.6rem, 3.2vw, 2.4rem);
+    text-underline-offset: 6px;
+    word-break: break-word;
+  }
+  .email-link:hover { color: var(--fig); }
+  form { display: grid; gap: 1.1rem; }
+  label { display: grid; gap: .35rem; font-weight: 500; font-size: .95rem; }
+  input, textarea, select {
+    font: inherit;
+    color: var(--olive);
+    background: var(--paper);
+    border: 1px solid rgba(34,48,31,.35);
+    border-radius: 6px;
+    padding: .75rem .9rem;
+    width: 100%;
+  }
+  textarea { min-height: 9rem; resize: vertical; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1.1rem; }
+  button {
+    font: inherit; font-weight: 600;
+    background: var(--olive); color: var(--paper);
+    border: 0; border-radius: 999px;
+    padding: .85rem 1.8rem;
+    cursor: pointer;
+    justify-self: start;
+    transition: background .2s;
+  }
+  button:hover { background: var(--fig); }
+  .status { min-height: 1.5em; margin: 0; font-weight: 500; }
+
+  /* ---------- Newsletter ---------- */
+  .newsletter {
+    background: var(--apricot);
+    padding: 2rem clamp(1.25rem, 4vw, 3rem);
+  }
+  .newsletter-inner {
+    max-width: 1200px; margin: 0 auto;
+    display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 1rem 2rem;
+  }
+  .newsletter p { margin: 0; font-family: var(--display); font-size: clamp(1.4rem, 2.6vw, 2rem); line-height: 1.2; }
+  .newsletter a.btn {
+    background: var(--olive); color: var(--paper);
+    padding: .85rem 1.8rem; border-radius: 999px;
+    text-decoration: none; font-weight: 600;
+  }
+  .newsletter a.btn:hover { background: var(--fig); }
+
+  footer {
+    background: var(--olive); color: var(--sage);
+    padding: 2.5rem clamp(1.25rem, 4vw, 3rem);
+    font-size: .9rem;
+  }
+  footer .inner { max-width: 1200px; margin: 0 auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 1rem; }
+
+  /* ---------- Responsive ---------- */
+  @media (max-width: 760px) {
+    .story, .contact-inner, .nots li { grid-template-columns: 1fr; }
+    .row { grid-template-columns: 1fr; }
+    .nav ul { gap: 1rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .bubbles { display: none; }
+    html { scroll-behavior: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav class="nav" id="nav" aria-label="Main">
+  <a class="mark" href="#top">Astra</a>
+  <ul>
+    <li><a href="#story">Story</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<header class="hero" id="top">
+  <!-- When your montage is ready, drop the file next to index.html and uncomment:
+  <video autoplay muted loop playsinline poster="poster.jpg">
+    <source src="hero.mp4" type="video/mp4">
+  </video>
+  -->
+  <div class="bubbles" id="bubbles" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <h1 class="wordmark">Astra</h1>
+    <p class="slogan">Liquid gastronomy from the Californian valley</p>
+  </div>
+</header>
+
+<main>
+  <section id="story">
+    <div class="story">
+      <h2>Our story</h2>
+      <div>
+        <p class="lede">It began with a friendship formed around a volunteer-run organic farm in the radiant southern Californian valley.</p>
+        <p>Sun-soaked days tending to the earth were followed by jubilant nights of revelry. Our non-alcoholic craft beverage bottles that very spirit.</p>
+        <p>We source single-origin produce and tisanes, then use culinary techniques like steeping, grilling and roasting to draw out the essence of each ingredient.</p>
+        <ul class="specs" aria-label="Product details">
+          <li>0.0% alc</li>
+          <li>Pasteurized</li>
+          <li>Sparkling</li>
+          <li>Shareable 500mL</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="nots" aria-labelledby="nots-title">
+    <div class="nots-inner">
+      <h2 id="nots-title">What we're not</h2>
+      <ol>
+        <li>
+          <h3>Never dealcoholized</h3>
+          <p>Nothing here is stripped out. Everything that goes in has a purpose.</p>
+        </li>
+        <li>
+          <h3>Never mass produced</h3>
+          <p>Made with whole-food varieties bred for flavor, not run off a production line with fake chemicals.</p>
+        </li>
+        <li>
+          <h3>Never an imitation</h3>
+          <p>We share the social rituals of wine, but we don't pretend to be a wine substitute.</p>
+        </li>
+      </ol>
+      <p class="signoff">Cheers,<br>Harrison and Max</p>
+      <p class="musings"><a id="substack-link-1" href="#">More stories and musings from team Astra</a></p>
+    </div>
+  </section>
+
+  <section class="contact" id="contact">
+    <div class="contact-inner">
+      <div class="intro">
+        <h2>Say hello</h2>
+        <p>Have questions, collaboration inquiries, or just want to say hi? Let's connect.</p>
+        <p>Want to pour Astra or recommend a stockist? Write to us here too.</p>
+        <a class="email-link" id="email-link" href="#"></a>
+      </div>
+      <form id="contact-form" novalidate>
+        <div class="row">
+          <label>Name
+            <input name="name" autocomplete="name" required>
+          </label>
+          <label>Email
+            <input name="email" type="email" autocomplete="email" required>
+          </label>
+        </div>
+        <label>What's this about?
+          <select name="topic">
+            <option>General question</option>
+            <option>Becoming a stockist</option>
+            <option>Collaboration</option>
+            <option>Press</option>
+          </select>
+        </label>
+        <label>Message
+          <textarea name="message" required></textarea>
+        </label>
+        <button type="submit">Send message</button>
+        <p class="status" id="form-status" role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </section>
+</main>
+
+<div class="newsletter">
+  <div class="newsletter-inner">
+    <p>Get first word on new flavors and where we're pouring.</p>
+    <a class="btn" id="substack-link-2" href="#">Join the newsletter</a>
+  </div>
+</div>
+
+<footer>
+  <div class="inner">
+    <span>© <span id="year"></span> Astra. Made in California.</span>
+    <a id="email-footer" href="#"></a>
+  </div>
+</footer>
+
+<script>
+  /* ============ EDIT THESE ============ */
+  const CONTACT_EMAIL = "drink@drinkastra.com";
+  const SUBSTACK_URL  = "https://thesecretingredient.substack.com/";
+  // Free form handling: create a form at formspree.io and paste its URL here,
+  // e.g. "https://formspree.io/f/abcdwxyz". Leave empty to open the visitor's email app instead.
+  const FORM_ENDPOINT = "";
+  /* ==================================== */
+
+  document.getElementById("year").textContent = new Date().getFullYear();
+  for (const id of ["email-link", "email-footer"]) {
+    const a = document.getElementById(id);
+    a.href = "mailto:" + CONTACT_EMAIL;
+    a.textContent = CONTACT_EMAIL;
+  }
+  for (const id of ["substack-link-1", "substack-link-2"]) {
+    const a = document.getElementById(id);
+    a.href = SUBSTACK_URL;
+    a.target = "_blank";
+    a.rel = "noopener";
+  }
+
+  // Nav turns solid after the hero
+  const nav = document.getElementById("nav");
+  const hero = document.getElementById("top");
+  new IntersectionObserver(([e]) => nav.classList.toggle("solid", !e.isIntersecting), { threshold: 0.08 }).observe(hero);
+
+  // Effervescence
+  const bubbles = document.getElementById("bubbles");
+  for (let i = 0; i < 28; i++) {
+    const s = document.createElement("span");
+    const size = 4 + Math.random() * 14;
+    s.style.width = s.style.height = size + "px";
+    s.style.left = Math.random() * 100 + "%";
+    s.style.animationDuration = 7 + Math.random() * 10 + "s";
+    s.style.animationDelay = -Math.random() * 15 + "s";
+    bubbles.appendChild(s);
+  }
+
+  // Contact form
+  const form = document.getElementById("contact-form");
+  const status = document.getElementById("form-status");
+  form.addEventListener("submit", async (e) => {
+    e.preventDefault();
+    const data = new FormData(form);
+    if (!data.get("name") || !data.get("email") || !data.get("message")) {
+      status.textContent = "Add your name, email and a message to send.";
+      return;
+    }
+    if (!FORM_ENDPOINT) {
+      const subject = encodeURIComponent(`${data.get("topic")} from ${data.get("name")}`);
+      const body = encodeURIComponent(`${data.get("message")}\n\n${data.get("name")}\n${data.get("email")}`);
+      window.location.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+      status.textContent = "Your email app should open with the message ready to send.";
+      return;
+    }
+    status.textContent = "Sending…";
+    try {
+      const res = await fetch(FORM_ENDPOINT, { method: "POST", body: data, headers: { Accept: "application/json" } });
+      if (!res.ok) throw new Error();
+      form.reset();
+      status.textContent = "Message sent. We'll be in touch soon.";
+    } catch {
+      status.textContent = `Message didn't send. Email us directly at ${CONTACT_EMAIL}.`;
+    }
+  });
+</script>
+</body>
+</html>
