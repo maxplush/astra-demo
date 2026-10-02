@@ -7,10 +7,10 @@
 
 const SITE = {
   // The address shown on the page and used by the contact form.
-  email: "drink@drinkastra.com",
+  email: "info@drink-astra.com",
 
   // Newsletter archive. Opens in a new tab.
-  substack: "https://thesecretingredient.substack.com/",
+  substack: "https://thesecretingredient.substack.com/s/drink-astra",
 
   // Optional. Create a free form at https://formspree.io and paste its
   // endpoint here to have messages delivered to an inbox. Left empty, the
