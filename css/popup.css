@@ -1,0 +1,127 @@
+/* ==========================================================================
+   popup.css — the launch-list signup dialog.
+
+   Appears once per visitor, holds its own state, and never blocks the page
+   from being read. Nothing here affects the rest of the site.
+   ========================================================================== */
+
+.signup {
+  position: fixed;
+  inset: 0;
+  z-index: 100;
+  display: grid;
+  place-items: center;
+  padding: var(--gutter);
+  /* Hidden until js adds .signup--open. */
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.45s ease, visibility 0s linear 0.45s;
+}
+
+.signup--open {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 0.45s ease;
+}
+
+.signup__scrim {
+  position: absolute;
+  inset: 0;
+  background: rgba(23, 24, 15, 0.72);
+  backdrop-filter: blur(3px);
+  border: 0;
+  padding: 0;
+  cursor: pointer;
+}
+
+.signup__panel {
+  position: relative;
+  width: min(30rem, 100%);
+  background: var(--paper);
+  color: var(--ink);
+  padding: clamp(2rem, 5vw, 3rem);
+  box-shadow: 0 2rem 4rem rgba(23, 24, 15, 0.35);
+  transform: translateY(1.5rem);
+  transition: transform 0.5s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+
+.signup--open .signup__panel { transform: none; }
+
+.signup__close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  display: grid;
+  place-items: center;
+  font: inherit;
+  font-size: 1.35rem;
+  line-height: 1;
+  color: var(--stone);
+  background: transparent;
+  border: 0;
+  border-radius: 0;
+  padding: 0;
+  cursor: pointer;
+  transition: color 0.2s ease;
+}
+.signup__close:hover { color: var(--ink); background: transparent; }
+
+.signup__title {
+  font-family: var(--display);
+  font-weight: 300;
+  font-size: clamp(1.6rem, 4.5vw, 2.1rem);
+  line-height: 1.12;
+  letter-spacing: -0.01em;
+  margin: 0 0 0.85rem;
+  padding-right: 1.5rem;
+  font-variant-ligatures: none;
+  font-feature-settings: "liga" 0, "dlig" 0, "clig" 0, "hlig" 0;
+}
+
+.signup__note {
+  font-size: var(--t-sm);
+  color: var(--stone);
+  margin: 0 0 1.75rem;
+  max-width: 34ch;
+}
+
+.signup__row {
+  display: flex;
+  align-items: flex-end;
+  gap: 1rem;
+}
+.signup__row .field { flex: 1; margin-bottom: 0; }
+.signup__row .button { flex: none; padding-inline: 1.5rem; }
+
+.signup__status {
+  min-height: 1.5em;
+  margin: 0.9rem 0 0;
+  font-size: var(--t-sm);
+  color: var(--stone);
+}
+.signup__status--error { color: var(--nasturtium); }
+
+/* The confirmation replaces the form rather than sitting under it. */
+.signup__done { display: none; }
+.signup--done .signup__form { display: none; }
+.signup--done .signup__done { display: block; }
+.signup--done .signup__note { display: none; }
+
+.signup__fine {
+  font-size: var(--t-xs);
+  color: var(--stone);
+  margin: 1.25rem 0 0;
+}
+
+@media (max-width: 420px) {
+  .signup__row { flex-direction: column; align-items: stretch; gap: 1.25rem; }
+  .signup__row .button { width: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .signup,
+  .signup__panel { transition: none; }
+  .signup__panel { transform: none; }
+}
